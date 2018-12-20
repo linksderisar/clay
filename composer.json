@@ -1,26 +1,28 @@
 {
-    "name": "thettler/clay",
+    "name": "linksderisar/clay",
     "description": "A Package to create Clay Json Blueprints",
     "license": "MIT",
     "authors": [
         {
             "name": "Tobias Hettler",
-            "email": "tobias.hettler@gmx.de"
+            "email": "tobias.hettler@linksderisar.de"
         }
     ],
-    "require": {},
+    "require": {
+        "php": "^7.2",
+        "ext-json": "*"
+    },
     "require-dev": {
         "orchestra/testbench": "^3.7"
     },
     "autoload": {
         "psr-4": {
-            "thettler\\Clay\\": "src/"
+            "Linksderisar\\Clay\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "thettler\\Clay\\Tests": "tests/"
-
+            "Linksderisar\\Clay\\Tests\\": "tests/"
         }
     }
 }
