@@ -2,10 +2,8 @@
 
 namespace Linksderisar\Clay\Tests\Feature\Blueprints;
 
-
-use Linksderisar\Clay\Blueprints\IfConditionBlueprint;
-use Linksderisar\Clay\Blueprints\ShowConditionBlueprint;
 use Linksderisar\Clay\Tests\TestCase;
+use Linksderisar\Clay\Blueprints\ShowConditionBlueprint;
 
 class ShowConditionBlueprintTest extends TestCase
 {

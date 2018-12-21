@@ -5,21 +5,41 @@ namespace Linksderisar\Clay\Blueprints\Abstracts;
 use Linksderisar\Clay\Exceptions\BlueprintException;
 use Linksderisar\Clay\Exceptions\RequiredBlueprintAttributeMissingException;
 
+/**
+ * Class ConditionBlueprint
+ *
+ * @package Linksderisar\Clay\Blueprints\Abstracts
+ * @author Tobias Hettler <tobias.hettler@linksderisar.com>
+ */
 abstract class ConditionBlueprint extends Blueprint
 {
-    /** @var array  */
+    /**
+     * First condition argument
+     *
+     * @var array
+     */
     protected $firstArgument = [];
 
-    /** @var array  */
+    /**
+     * Second condition argument
+     *
+     * @var array
+     */
     protected $secondArgument = [];
 
-    /** @var array  */
+    /**
+     * Condition Operator
+     *
+     * @var array
+     */
     protected $operator = [];
 
     /** @var array  */
     const ALLOWED_OPERATORS = ['==', '===', '>', '<', '>=', '<=', '!=', '!=='];
 
     /**
+     * Get First Argument
+     *
      * @return mixed
      */
     public function getFirstArgument(): array
@@ -28,6 +48,8 @@ abstract class ConditionBlueprint extends Blueprint
     }
 
     /**
+     * Set first argument
+     *
      * @param mixed $firstArgument
      * @return $this
      */
@@ -38,6 +60,8 @@ abstract class ConditionBlueprint extends Blueprint
     }
 
     /**
+     * Set first binded Argument
+     *
      * @param mixed $firstArgument
      * @return $this
      */
@@ -48,6 +72,8 @@ abstract class ConditionBlueprint extends Blueprint
     }
 
     /**
+     * Get second argument
+     *
      * @return mixed
      */
     public function getSecondArgument(): array
@@ -56,6 +82,8 @@ abstract class ConditionBlueprint extends Blueprint
     }
 
     /**
+     * Set second argument
+     *
      * @param mixed $secondArgument
      * @return $this
      */
@@ -66,6 +94,8 @@ abstract class ConditionBlueprint extends Blueprint
     }
 
     /**
+     * Set second binded Argument
+     *
      * @param mixed $secondArgument
      * @return $this
      */
@@ -76,6 +106,8 @@ abstract class ConditionBlueprint extends Blueprint
     }
 
     /**
+     * Get Operator
+     *
      * @return array
      */
     public function getOperator(): array
@@ -84,6 +116,8 @@ abstract class ConditionBlueprint extends Blueprint
     }
 
     /**
+     * Set Operator
+     *
      * @param string $operator
      * @return $this
      */
@@ -94,6 +128,8 @@ abstract class ConditionBlueprint extends Blueprint
     }
 
     /**
+     * Set binded operator
+     *
      * @param string $operator
      * @return $this
      */
@@ -104,6 +140,8 @@ abstract class ConditionBlueprint extends Blueprint
     }
 
     /**
+     * Get instance of Condition Blueprint
+     *
      * @param mixed ...$attributes
      * @return $this
      */
@@ -113,6 +151,8 @@ abstract class ConditionBlueprint extends Blueprint
     }
 
     /**
+     * Convert to array
+     *
      * @return array
      * @throws RequiredBlueprintAttributeMissingException
      * @throws BlueprintException

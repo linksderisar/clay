@@ -2,18 +2,18 @@
 
 namespace Linksderisar\Clay\Tests\Feature\Blueprints;
 
-use Linksderisar\Clay\Blueprints\BaseBlueprint;
-use Linksderisar\Clay\Blueprints\IfConditionBlueprint;
-use Linksderisar\Clay\Blueprints\LoopBlueprint;
-use Linksderisar\Clay\Blueprints\ShowConditionBlueprint;
-use Linksderisar\Clay\Exceptions\BlueprintException;
-use Linksderisar\Clay\Exceptions\RequiredBlueprintAttributeMissingException;
 use Linksderisar\Clay\Tests\TestCase;
+use Linksderisar\Clay\Blueprints\ComponentBlueprint;
+use Linksderisar\Clay\Blueprints\LoopBlueprint;
+use Linksderisar\Clay\Exceptions\BlueprintException;
+use Linksderisar\Clay\Blueprints\IfConditionBlueprint;
+use Linksderisar\Clay\Blueprints\ShowConditionBlueprint;
+use Linksderisar\Clay\Exceptions\RequiredBlueprintAttributeMissingException;
 
 class BaseBlueprintTest extends TestCase
 {
 
-    /** @var BaseBlueprint */
+    /** @var ComponentBlueprint */
     protected $blueprint;
 
     /**
@@ -22,7 +22,7 @@ class BaseBlueprintTest extends TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->blueprint = BaseBlueprint::create('test');
+        $this->blueprint = ComponentBlueprint::create('test');
     }
 
     /** @test */
@@ -39,7 +39,7 @@ class BaseBlueprintTest extends TestCase
     {
         $this->expectException(RequiredBlueprintAttributeMissingException::class);
 
-        $blueprint = new BaseBlueprint();
+        $blueprint = new ComponentBlueprint();
         $blueprint->toJson();
     }
 
@@ -271,7 +271,7 @@ class BaseBlueprintTest extends TestCase
     /** @test */
     public function scoped_slots_can_be_set_in_blueprint()
     {
-        $slot = BaseBlueprint::create('slot');
+        $slot = ComponentBlueprint::create('slot');
         $this->blueprint->setScopedSlots(function (\Closure $slotProps) use ($slot) {
             return [
                 $slot,
@@ -290,7 +290,7 @@ class BaseBlueprintTest extends TestCase
                 ]
             ));
 
-        $slot_2 = BaseBlueprint::create('slot_2');
+        $slot_2 = ComponentBlueprint::create('slot_2');
         $this->blueprint->setScopedSlots(function (\Closure $slotProps) use ($slot_2, $slot) {
             return [
                 $slot,
@@ -318,7 +318,7 @@ class BaseBlueprintTest extends TestCase
     /** @test */
     public function slotProps_helper_works()
     {
-        $slot = BaseBlueprint::create('slot');
+        $slot = ComponentBlueprint::create('slot');
         $this->blueprint->setScopedSlots(function (\Closure $slotProps) use ($slot) {
             return [
                 $slot->addProps(['prop' => $slotProps('ref.prop')]),
@@ -351,8 +351,8 @@ class BaseBlueprintTest extends TestCase
     public function children_can_be_set_in_blueprint()
     {
         $this->blueprint->setChildren(
-            $child = BaseBlueprint::create('child'),
-            $child_2 = BaseBlueprint::create('child_2')
+            $child = ComponentBlueprint::create('child'),
+            $child_2 = ComponentBlueprint::create('child_2')
         );
 
         $this->makeTestResponse($this->blueprint->toJson())
@@ -456,9 +456,9 @@ class BaseBlueprintTest extends TestCase
     public function a_blueprint_can_not_have_children_and_text_at_once()
     {
         $this->expectException(BlueprintException::class);
-        $this->expectExceptionMessage(class_basename(BaseBlueprint::class) . ' can not have Children and Text at the same Time!');
+        $this->expectExceptionMessage(class_basename(ComponentBlueprint::class) . ' can not have Children and Text at the same Time!');
 
-        $this->blueprint->setChildren(BaseBlueprint::create('child'))->setText('Text')->toJson();
+        $this->blueprint->setChildren(ComponentBlueprint::create('child'))->setText('Text')->toJson();
     }
 
     /** @test */

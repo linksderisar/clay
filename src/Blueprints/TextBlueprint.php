@@ -2,51 +2,80 @@
 
 namespace Linksderisar\Clay\Blueprints;
 
+use Linksderisar\Clay\Exceptions\BlueprintException;
 use Linksderisar\Clay\Blueprints\Abstracts\Blueprint;
 
+/**
+ * Class TextBlueprint
+ * This Blueprint is used to generate the json for an simple Text output in the Frontend
+ *
+ * @author Tobias Hettler <tobias.hettler@linksderisar.de>
+ * @package Linksderisar\Clay\Blueprints
+ */
 class TextBlueprint extends Blueprint
 {
 
-    /** @var string */
-    protected $value = '';
+    /**
+     * The Content of the text
+     *
+     * @var string
+     */
+    protected $content = '';
 
-    /** @var string  */
+    /**
+     * Blueprint Type: In this case it must bei '$text'
+     *
+     * @var string
+     */
     protected $type = '$text';
 
     /**
+     * Set Content
+     *
      * @param string $value
      * @return $this
      */
-    public function setValue(string $value): self
+    public function setContent(string $value): self
     {
-        $this->value = $value;
+        $this->content = $value;
         return $this;
     }
 
     /**
+     * Get Content
+     *
      * @return string
      */
-    public function getValue(): string
+    public function getContent(): string
     {
-        return $this->value;
+        return $this->content;
     }
 
     /**
-     * @param mixed ...$attributes [0] => value
+     * Create TextBlueprint. The first parameter must be the content of the text
+     *
+     * @param mixed ...$attributes [0] => content
      * @return $this
+     * @throws BlueprintException
      */
     public static function create(...$attributes): self
     {
-        return parent::create($attributes)->setValue($attributes[0]);
+        if (!$attributes[0] ?? false) {
+            throw new BlueprintException('First Parameter of ' . class_basename(static::class) . 'must be the content of the Text.');
+        }
+
+        return parent::create($attributes)->setContent($attributes[0]);
     }
 
     /**
+     * Convert blueprint to Array
+     *
      * @return array
      * @throws \Linksderisar\Clay\Exceptions\RequiredBlueprintAttributeMissingException
      */
     public function toArray(): array
     {
-        return array_merge(parent::toArray(), ['value' => $this->getValue()]);
+        return array_merge(parent::toArray(), ['value' => $this->getContent()]);
     }
 
 }

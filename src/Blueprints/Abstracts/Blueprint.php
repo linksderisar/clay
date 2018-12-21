@@ -2,15 +2,29 @@
 
 namespace Linksderisar\Clay\Blueprints\Abstracts;
 
-
 use Linksderisar\Clay\Exceptions\RequiredBlueprintAttributeMissingException;
 
+/**
+ * Class Blueprint
+ * Abstract Blueprint with base functionality
+ *
+ * @package Linksderisar\Clay\Blueprints\Abstracts
+ * @author Tobias Hettler <tobias.hettler@linksderisar.com>
+ */
 abstract class Blueprint implements \Linksderisar\Clay\Blueprints\Contracts\Blueprint
 {
-    /** @var string */
+    /**
+     * Unique identifier
+     *
+     * @var string
+     */
     protected $id;
 
-    /** @var string */
+    /**
+     * Type of the blueprint. For Example: div, span, my-component
+     *
+     * @var string
+     */
     protected $type = '';
 
     /**
@@ -22,6 +36,8 @@ abstract class Blueprint implements \Linksderisar\Clay\Blueprints\Contracts\Blue
     }
 
     /**
+     * Get new Blueprint instance
+     *
      * @param array $attributes
      * @return $this
      */
@@ -31,6 +47,8 @@ abstract class Blueprint implements \Linksderisar\Clay\Blueprints\Contracts\Blue
     }
 
     /**
+     * Set Identifier
+     *
      * @param string $id
      * @return $this
      */
@@ -41,6 +59,8 @@ abstract class Blueprint implements \Linksderisar\Clay\Blueprints\Contracts\Blue
     }
 
     /**
+     * Set Type
+     *
      * @param string $type
      * @return $this
      */
@@ -51,6 +71,8 @@ abstract class Blueprint implements \Linksderisar\Clay\Blueprints\Contracts\Blue
     }
 
     /**
+     * Get Identifier
+     *
      * @return string
      */
     public function getId(): string
@@ -59,6 +81,8 @@ abstract class Blueprint implements \Linksderisar\Clay\Blueprints\Contracts\Blue
     }
 
     /**
+     * Get Type
+     *
      * @return string
      */
     public function getType(): string
@@ -67,6 +91,8 @@ abstract class Blueprint implements \Linksderisar\Clay\Blueprints\Contracts\Blue
     }
 
     /**
+     * Generate an unique Id
+     *
      * @return string
      */
     protected function generateId(): string
@@ -75,6 +101,8 @@ abstract class Blueprint implements \Linksderisar\Clay\Blueprints\Contracts\Blue
     }
 
     /**
+     * Clone Blueprint with new Identifier
+     *
      * @return $this
      */
     public function clone()
@@ -84,6 +112,8 @@ abstract class Blueprint implements \Linksderisar\Clay\Blueprints\Contracts\Blue
     }
 
     /**
+     * Convert Blueprint to Array
+     *
      * @return array
      * @throws RequiredBlueprintAttributeMissingException
      */
@@ -104,6 +134,8 @@ abstract class Blueprint implements \Linksderisar\Clay\Blueprints\Contracts\Blue
     }
 
     /**
+     * Convert Blueprint to Json
+     *
      * @return string
      * @throws RequiredBlueprintAttributeMissingException
      */
@@ -113,6 +145,8 @@ abstract class Blueprint implements \Linksderisar\Clay\Blueprints\Contracts\Blue
     }
 
     /**
+     * Convert Blueprint to Json
+     *
      * @return string
      * @throws RequiredBlueprintAttributeMissingException
      */
@@ -122,7 +156,7 @@ abstract class Blueprint implements \Linksderisar\Clay\Blueprints\Contracts\Blue
     }
 
     /**
-     *
+     * Clone Blueprint with new Identifier
      */
     public function __clone()
     {

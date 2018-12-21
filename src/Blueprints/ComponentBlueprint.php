@@ -2,8 +2,8 @@
 
 namespace Linksderisar\Clay\Blueprints;
 
-use Linksderisar\Clay\Blueprints\Abstracts\Blueprint;
 use Linksderisar\Clay\Exceptions\BlueprintException;
+use Linksderisar\Clay\Blueprints\Abstracts\Blueprint;
 
 /**
  * Class BaseBlueprint
@@ -12,11 +12,34 @@ use Linksderisar\Clay\Exceptions\BlueprintException;
  * @package Linksderisar\Clay\Blueprints
  * @author Tobias Hettler <tobias.hettler@linksderisar.de>
  */
-class BaseBlueprint extends Blueprint
+class ComponentBlueprint extends Blueprint
 {
+    /**
+     * Constant for the SlotProp Key in the Json
+     *
+     * @var string
+     */
     const SLOT_PROPS = '$_slot_props';
+
+    /**
+     * Constant for "this" in the Frontend
+     *
+     * @var string
+     */
     const SELF = '$_self';
+
+    /**
+     * Constant for loop key in the Frontend
+     *
+     * @var string
+     */
     const LOOP = 'loop';
+
+    /**
+     * Constant for the loop value in the Frontend
+     *
+     * @var string
+     */
     const LOOP_VALUE = '$_loop_value';
 
     /**
@@ -305,10 +328,10 @@ class BaseBlueprint extends Blueprint
     /**
      * Set Children
      *
-     * @param BaseBlueprint ...$children
+     * @param ComponentBlueprint ...$children
      * @return $this
      */
-    public function setChildren(BaseBlueprint ...$children): self
+    public function setChildren(ComponentBlueprint ...$children): self
     {
         $this->children = $children;
         return $this;
@@ -403,6 +426,7 @@ class BaseBlueprint extends Blueprint
      *
      * @param string $text
      * @return $this
+     * @throws BlueprintException
      */
     public function setText(string $text): self
     {

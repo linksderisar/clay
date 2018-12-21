@@ -3,10 +3,10 @@
 namespace Linksderisar\Clay\Tests\Feature\Blueprints;
 
 
-use Linksderisar\Clay\Blueprints\Abstracts\ConditionBlueprint;
-use Linksderisar\Clay\Exceptions\BlueprintException;
-use Linksderisar\Clay\Exceptions\RequiredBlueprintAttributeMissingException;
 use Linksderisar\Clay\Tests\TestCase;
+use Linksderisar\Clay\Exceptions\BlueprintException;
+use Linksderisar\Clay\Blueprints\Abstracts\ConditionBlueprint;
+use Linksderisar\Clay\Exceptions\RequiredBlueprintAttributeMissingException;
 
 class ConditionBlueprintTest extends TestCase
 {
