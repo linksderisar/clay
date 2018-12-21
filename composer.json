@@ -2,6 +2,7 @@
     "name": "linksderisar/clay",
     "description": "A Package to create Clay Json Blueprints",
     "license": "MIT",
+    "version": "0.1.0",
     "authors": [
         {
             "name": "Tobias Hettler",
