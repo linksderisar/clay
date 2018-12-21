@@ -60,7 +60,7 @@ class TextBlueprint extends Blueprint
      */
     public static function create(...$attributes): self
     {
-        if (!$attributes[0] ?? false) {
+        if (!($attributes[0] ?? false)) {
             throw new BlueprintException('First Parameter of ' . class_basename(static::class) . 'must be the content of the Text.');
         }
 

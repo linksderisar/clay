@@ -601,9 +601,14 @@ class ComponentBlueprint extends Blueprint
      *
      * @param mixed ...$attributes [0] => Blueprint Type
      * @return $this
+     * @throws BlueprintException
      */
     public static function create(...$attributes): self
     {
+        if (!($attributes[0] ?? false)) {
+            throw new BlueprintException('First Parameter of ' . class_basename(static::class) . 'must be the Type.');
+        }
+
         return parent::create($attributes)->setType($attributes[0]);
     }
 

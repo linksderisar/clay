@@ -2,8 +2,8 @@
 
 namespace Linksderisar\Clay\Blueprints;
 
-use Linksderisar\Clay\Exceptions\BlueprintException;
 use Linksderisar\Clay\Blueprints\Abstracts\Blueprint;
+use Linksderisar\Clay\Exceptions\BlueprintException;
 
 /**
  * Class LoopBlueprint
@@ -62,7 +62,7 @@ class LoopBlueprint extends Blueprint
      */
     public static function create(...$attributes): self
     {
-        if (!$attributes[0] ?? false) {
+        if (!($attributes[0] ?? false)) {
             throw new BlueprintException('First Parameter of ' . class_basename(static::class) . 'must be the iterable.');
         }
 

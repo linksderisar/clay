@@ -10,7 +10,7 @@ use Linksderisar\Clay\Blueprints\IfConditionBlueprint;
 use Linksderisar\Clay\Blueprints\ShowConditionBlueprint;
 use Linksderisar\Clay\Exceptions\RequiredBlueprintAttributeMissingException;
 
-class BaseBlueprintTest extends TestCase
+class ComponentBlueprintTest extends TestCase
 {
 
     /** @var ComponentBlueprint */
@@ -41,6 +41,14 @@ class BaseBlueprintTest extends TestCase
 
         $blueprint = new ComponentBlueprint();
         $blueprint->toJson();
+    }
+
+    /** @test */
+    public function type_as_first_argument_in_create_blueprint_is_required()
+    {
+        $this->expectException(BlueprintException::class);
+        $this->expectExceptionMessage('First Parameter of ' . class_basename(ComponentBlueprint::class) . 'must be the Type.');
+        ComponentBlueprint::create();
     }
 
     /** @test */
