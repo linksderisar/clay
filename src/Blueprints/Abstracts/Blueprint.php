@@ -107,8 +107,7 @@ abstract class Blueprint implements \Linksderisar\Clay\Blueprints\Contracts\Blue
      */
     public function clone()
     {
-        $clone = clone $this;
-        return  $clone->setId($this->generateId());
+        return clone $this;
     }
 
     /**
