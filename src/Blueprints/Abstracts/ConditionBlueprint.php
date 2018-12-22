@@ -60,7 +60,7 @@ abstract class ConditionBlueprint extends Blueprint
     }
 
     /**
-     * Set first binded Argument
+     * Set first bound Argument
      *
      * @param mixed $firstArgument
      * @return $this
@@ -94,7 +94,7 @@ abstract class ConditionBlueprint extends Blueprint
     }
 
     /**
-     * Set second binded Argument
+     * Set second bound Argument
      *
      * @param mixed $secondArgument
      * @return $this
@@ -128,7 +128,7 @@ abstract class ConditionBlueprint extends Blueprint
     }
 
     /**
-     * Set binded operator
+     * Set bound operator
      *
      * @param string $operator
      * @return $this

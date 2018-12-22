@@ -2,9 +2,9 @@
 
 namespace Linksderisar\Clay\Components;
 
-
-use Linksderisar\Clay\Components\Abstracts\Component;
+use Linksderisar\Clay\Exceptions\BindException;
 use Linksderisar\Clay\Exceptions\ComponentException;
+use Linksderisar\Clay\Components\Abstracts\Component;
 
 class BindProxy
 {
@@ -20,7 +20,7 @@ class BindProxy
         $this->component = $component;
 
         if ($this->component->getBindable() === false) {
-            throw new ComponentException('Binding is deactivated for this Class.');
+            throw new BindException('Binding is deactivated for this Class.');
         }
     }
 
@@ -37,12 +37,12 @@ class BindProxy
      * @param $name
      * @param $arguments
      * @return $this
-     * @throws ComponentException
+     * @throws BindException
      */
     protected function callOnBlueprint($name, array $arguments)
     {
         if (!method_exists($this->component->getBlueprint(), $name)) {
-            throw new ComponentException($name . ' can not be binded.');
+            throw new BindException($name . ' do not exist in Blueprint.');
         }
 
         $this->component->getBlueprint()->$name(...$arguments);
@@ -53,12 +53,12 @@ class BindProxy
      * @param $name
      * @param $arguments
      * @return $this
-     * @throws ComponentException
+     * @throws BindException
      */
     protected function callOnThis($name, array $arguments)
     {
         if (!method_exists($this->component, $name)) {
-            throw new ComponentException($name . ' can not be binded.');
+            throw new BindException($name . ' do not exist in Component.');
         }
 
         $this->component->$name(...$arguments);
@@ -70,16 +70,16 @@ class BindProxy
      * @param $name
      * @param array $arguments
      * @return $this
-     * @throws ComponentException
+     * @throws BindException
      */
     protected function callOnOtherClass(string $class, $name, array $arguments)
     {
         if (!class_exists($class)) {
-            throw new ComponentException($class . ' Do not exist.');
+            throw new BindException($class . ' do not exist.');
         }
 
         if (!method_exists($class, $name)) {
-            throw new ComponentException($name . ' can not be binded.');
+            throw new BindException($name . ' can not be bound.');
         }
 
         (new $class())->$name(...$arguments);
@@ -91,12 +91,12 @@ class BindProxy
      * @param string $name
      * @param $arguments
      * @return BindProxy
-     * @throws ComponentException
+     * @throws BindException
      */
     public function __call(string $name, array $arguments)
     {
         if (!method_exists($this->component, $name)) {
-            throw new ComponentException($name . ' can not be binded.');
+            throw new BindException($name . ' can not be bound.');
         }
 
         if (!$this->hasSpecialBindMethod($name)) {

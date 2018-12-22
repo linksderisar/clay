@@ -2,8 +2,8 @@
 
 namespace Linksderisar\Clay\Blueprints;
 
-use Linksderisar\Clay\Exceptions\BlueprintException;
 use Linksderisar\Clay\Blueprints\Abstracts\Blueprint;
+use Linksderisar\Clay\Exceptions\BlueprintException;
 
 /**
  * Class BaseBlueprint
@@ -161,6 +161,45 @@ class ComponentBlueprint extends Blueprint
     protected $affect = '';
 
     /**
+     * Bound attributes
+     *
+     * @var array
+     */
+    protected $bound = [];
+
+    /**
+     * @return array
+     */
+    protected function getBound(): array
+    {
+        return $this->bound;
+    }
+
+    /**
+     * Set Bound
+     *
+     * @param array $bound
+     * @return $this
+     */
+    protected function setBound(array $bound): self
+    {
+        $this->bound = $bound;
+        return $this;
+    }
+
+    /**
+     * Add bound
+     *
+     * @param string $bound
+     * @return $this
+     */
+    protected function addBound(string $bound): self
+    {
+        $this->bound = array_merge($this->getBound(), [$bound]);
+        return $this;
+    }
+
+    /**
      * Sets Ref
      *
      * @param string $ref
@@ -182,6 +221,30 @@ class ComponentBlueprint extends Blueprint
     {
         $this->key = $key;
         return $this;
+    }
+
+    /**
+     * Sets bound Key
+     *
+     * @param string $key
+     * @return $this
+     */
+    public function setBindKey(string $key): self
+    {
+        $this->key = $key;
+        return $this->addBound('key');
+    }
+
+    /**
+     * Sets bound Ref
+     *
+     * @param string $ref
+     * @return $this
+     */
+    public function setBindRef(string $ref): self
+    {
+        $this->ref = $ref;
+        return $this->addBound('ref');
     }
 
     /**
@@ -235,6 +298,49 @@ class ComponentBlueprint extends Blueprint
     }
 
     /**
+     * Set Attributes who will be bound to a data source in the frontend
+     *
+     * @param array $attributes
+     * @return $this
+     */
+    public function setBindAttributes(array $attributes): self
+    {
+        $this->attributes = collect($attributes)->mapWithKeys(function ($value, $key) {
+            return [':' . $key => $value];
+        })->all();
+        return $this;
+    }
+
+    /**
+     * Add an Attribute who will be bound to a data source in the frontend without deleting the current props
+     *
+     * @param string $key
+     * @param $value
+     * @return $this
+     */
+    public function addBindAttribute(string $key, $value): self
+    {
+        return $this->addBindAttributes([$key => $value]);
+    }
+
+    /**
+     * Add Attributes who will be bound to a data source in the frontend without deleting the current props
+     *
+     * @param array $attributes
+     * @return $this
+     */
+    public function addBindAttributes(array $attributes): self
+    {
+        $this->attributes = array_merge(
+            $this->getAttributes(),
+            collect($attributes)->mapWithKeys(function ($value, $key) {
+                return [':' . $key => $value];
+            })->all()
+        );
+        return $this;
+    }
+
+    /**
      * Adds Attributes without deleting the current attributes
      *
      * @param array $attributes
@@ -259,7 +365,7 @@ class ComponentBlueprint extends Blueprint
     }
 
     /**
-     * Set props who will be binded to a data source in the frontend
+     * Set props who will be bound to a data source in the frontend
      *
      * @param array $props
      * @return $this
@@ -285,7 +391,7 @@ class ComponentBlueprint extends Blueprint
     }
 
     /**
-     * Add props who will be binded to a data source in the frontend without deleting the current props
+     * Add props who will be bound to a data source in the frontend without deleting the current props
      *
      * @param array $props
      * @return $this
@@ -299,6 +405,18 @@ class ComponentBlueprint extends Blueprint
             })->all()
         );
         return $this;
+    }
+
+    /**
+     * Add a prop who will be bound to a data source in the frontend without deleting the current props
+     *
+     * @param string $key
+     * @param $prop
+     * @return $this
+     */
+    public function addBindProp(string $key, $prop): self
+    {
+        return $this->addBindProps([$key => $prop]);
     }
 
     /**
@@ -350,7 +468,7 @@ class ComponentBlueprint extends Blueprint
     }
 
     /**
-     * Set binded Classes
+     * Set bound Classes
      *
      * @param string $ref
      * @return $this
@@ -435,14 +553,15 @@ class ComponentBlueprint extends Blueprint
     }
 
     /**
-     * Set text binded to a data source in the frontend
+     * Set text bound to a data source in the frontend
      *
      * @param string $text
      * @return $this
+     * @throws BlueprintException
      */
     public function setBindText(string $text): self
     {
-        $this->text = [':value' => $text];
+        $this->text = TextBlueprint::create($text)->bind();
         return $this;
     }
 
@@ -597,6 +716,17 @@ class ComponentBlueprint extends Blueprint
     }
 
     /**
+     * Check if key is bound
+     *
+     * @param string $key
+     * @return bool
+     */
+    protected function isBound(string $key): bool
+    {
+        return in_array($key, $this->getBound());
+    }
+
+    /**
      * Create an instance of the Blueprint
      *
      * @param mixed ...$attributes [0] => Blueprint Type
@@ -627,11 +757,11 @@ class ComponentBlueprint extends Blueprint
         }
 
         if ($this->getKey()) {
-            $array['attributes']['key'] = $this->getKey();
+            $array['attributes'][$this->isBound('key') ? ':key' : 'key'] = $this->getKey();
         }
 
         if ($this->getRef()) {
-            $array['attributes']['ref'] = $this->getRef();
+            $array['attributes'][$this->isBound('ref') ? ':ref' : 'ref'] = $this->getRef();
         }
 
         if ($this->getRefInFor()) {

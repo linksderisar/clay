@@ -2,8 +2,8 @@
 
 namespace Linksderisar\Clay\Blueprints;
 
-use Linksderisar\Clay\Exceptions\BlueprintException;
 use Linksderisar\Clay\Blueprints\Abstracts\Blueprint;
+use Linksderisar\Clay\Exceptions\BlueprintException;
 
 /**
  * Class TextBlueprint
@@ -21,6 +21,8 @@ class TextBlueprint extends Blueprint
      * @var string
      */
     protected $content = '';
+
+    protected $bound = false;
 
     /**
      * Blueprint Type: In this case it must bei '$text'
@@ -52,6 +54,18 @@ class TextBlueprint extends Blueprint
     }
 
     /**
+     * Bind text
+     *
+     * @param bool $bind
+     * @return $this
+     */
+    public function bind(bool $bind = true)
+    {
+        $this->bound = $bind;
+        return $this;
+    }
+
+    /**
      * Create TextBlueprint. The first parameter must be the content of the text
      *
      * @param mixed ...$attributes [0] => content
@@ -75,7 +89,7 @@ class TextBlueprint extends Blueprint
      */
     public function toArray(): array
     {
-        return array_merge(parent::toArray(), ['value' => $this->getContent()]);
+        return array_merge(parent::toArray(), [$this->bound ? ':value' : 'value' => $this->getContent()]);
     }
 
 }

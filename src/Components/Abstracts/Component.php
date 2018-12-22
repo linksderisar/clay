@@ -22,8 +22,10 @@ abstract class Component implements \Linksderisar\Clay\Components\Contracts\Comp
     protected $scopedSlots;
 
     protected $bindable = [
-        'prop' => 'addBindProps',
+        'prop' => 'addBindProp',
         'props' => 'addBindProps',
+        'attribute' => 'addBindAttribute',
+        'attributes' => 'addBindAttributes',
     ];
 
     /**
@@ -301,9 +303,9 @@ abstract class Component implements \Linksderisar\Clay\Components\Contracts\Comp
     }
 
     /**
-     * @return array
+     * @return array|bool
      */
-    public function getBindable(): array
+    public function getBindable()
     {
         return $this->bindable;
     }

@@ -30,4 +30,19 @@ class TextBlueprintTest extends TestCase
                 ]
             );
     }
+
+    /** @test */
+    public function bound_text_can_be_converted_in_json()
+    {
+        $textBlueprint = TextBlueprint::create('Dummy Text')->bind();
+
+        $this->makeTestResponse($textBlueprint->toJson())
+            ->assertExactJson(
+                [
+                    'id' => $textBlueprint->getId(),
+                    'type' => '$text',
+                    ':value' => 'Dummy Text'
+                ]
+            );
+    }
 }

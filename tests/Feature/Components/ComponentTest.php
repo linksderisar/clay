@@ -198,18 +198,6 @@ class ComponentTest extends TestCase
         $this->assertEquals('ref.to.data.source', $this->component->getBlueprint()->getLoop()->getIterable());
     }
 
-    /** @test */
-    public function all_attributes_can_be_binded()
-    {
-        $this->component->bind(function ($component) {
-            return $component->props(['key' => 'value'])
-                ->props(['sec' => 'value'])
-                ->text('Laaa');
-        })->prop('unbind', 'lala');
-$this->fail();
-        $this->assertArrayHasKey(':key', $this->component->toArray()['attributes']['props']);
-    }
-
     /**
      * @return Component
      */
