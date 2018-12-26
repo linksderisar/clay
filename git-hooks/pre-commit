@@ -1,0 +1,4 @@
+#!/bin/sh
+
+sh git-hooks/codesniffer.sh || exit
+sh git-hooks/phpunit.sh || exit

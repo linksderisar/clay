@@ -295,6 +295,7 @@ abstract class Component implements \Linksderisar\Clay\Components\Contracts\Comp
     /**
      * @param callable $bind
      * @return Component
+     * @throws \Linksderisar\Clay\Exceptions\BindException
      */
     public function bind(callable $bind): self
     {
@@ -360,5 +361,4 @@ abstract class Component implements \Linksderisar\Clay\Components\Contracts\Comp
     {
         return $this->toJson();
     }
-
 }
