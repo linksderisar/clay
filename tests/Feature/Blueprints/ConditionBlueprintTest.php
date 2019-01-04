@@ -2,16 +2,24 @@
 
 namespace Linksderisar\Clay\Tests\Feature\Blueprints;
 
-
-use Linksderisar\Clay\Tests\TestCase;
-use Linksderisar\Clay\Exceptions\BlueprintException;
 use Linksderisar\Clay\Blueprints\Abstracts\ConditionBlueprint;
+use Linksderisar\Clay\Exceptions\BlueprintException;
 use Linksderisar\Clay\Exceptions\RequiredBlueprintAttributeMissingException;
+use Linksderisar\Clay\Tests\TestCase;
 
 class ConditionBlueprintTest extends TestCase
 {
     /** @var ConditionBlueprint */
     protected $condition;
+
+    protected $exampleJson = [
+        '===' => ['first' => 'var1', 'second' => 'var2']
+    ];
+    protected $exampleJson2 = [
+        'and' => [
+            '===' => ['first' => 'var1', 'second' => 'var2']
+        ]
+    ];
 
     protected function setUp()
     {
@@ -25,15 +33,13 @@ class ConditionBlueprintTest extends TestCase
     public function condition_works_with_arguments_and_operator()
     {
         $this->condition
-            ->setFirstArgument('firstArgument')
+            ->setFirstArgument('var1')
             ->setOperator('===')
-            ->setSecondArgument('secondArgument');
+            ->setSecondArgument('var2');
 
         $this->makeTestResponse($this->condition->toJson())
             ->assertJson([
-                'firstArgument' => 'firstArgument',
-                'secondArgument' => 'secondArgument',
-                'operator' => '===',
+                '===' => ['first' => 'var1', 'second' => 'var2']
             ]);
     }
 
@@ -86,15 +92,13 @@ class ConditionBlueprintTest extends TestCase
     public function condition_works_with_bind_arguments_and_operator()
     {
         $this->condition
-            ->setBindFirstArgument('firstArgument')
-            ->setBindOperator('===')
-            ->setBindSecondArgument('secondArgument');
+            ->setBindFirstArgument('var1')
+            ->setOperator('===')
+            ->setBindSecondArgument('var2');
 
         $this->makeTestResponse($this->condition->toJson())
             ->assertJson([
-                ':firstArgument' => 'firstArgument',
-                ':secondArgument' => 'secondArgument',
-                ':operator' => '===',
+                '===' => [':first' => 'var1', ':second' => 'var2']
             ]);
     }
 }

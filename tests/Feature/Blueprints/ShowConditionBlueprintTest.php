@@ -2,8 +2,8 @@
 
 namespace Linksderisar\Clay\Tests\Feature\Blueprints;
 
-use Linksderisar\Clay\Tests\TestCase;
 use Linksderisar\Clay\Blueprints\ShowConditionBlueprint;
+use Linksderisar\Clay\Tests\TestCase;
 
 class ShowConditionBlueprintTest extends TestCase
 {
@@ -18,9 +18,7 @@ class ShowConditionBlueprintTest extends TestCase
         $this->makeTestResponse($condition->toJson())
             ->assertJson([
                 'show' => [
-                    'firstArgument' => 'firstArgument',
-                    'secondArgument' => 'secondArgument',
-                    'operator' => '===',
+                    '===' => ['first' => 'firstArgument', 'second' => 'secondArgument']
                 ]
             ]);
     }

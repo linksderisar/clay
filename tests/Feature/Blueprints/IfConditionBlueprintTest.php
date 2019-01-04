@@ -2,8 +2,8 @@
 
 namespace Linksderisar\Clay\Tests\Feature\Blueprints;
 
-use Linksderisar\Clay\Tests\TestCase;
 use Linksderisar\Clay\Blueprints\IfConditionBlueprint;
+use Linksderisar\Clay\Tests\TestCase;
 
 class IfConditionBlueprintTest extends TestCase
 {
@@ -11,16 +11,14 @@ class IfConditionBlueprintTest extends TestCase
     public function arguments_are_correct_wrapped_in_json()
     {
         $condition = IfConditionBlueprint::create()
-            ->setFirstArgument('firstArgument')
+            ->setFirstArgument('var1')
             ->setOperator('===')
-            ->setSecondArgument('secondArgument');
+            ->setSecondArgument('var2');
 
         $this->makeTestResponse($condition->toJson())
             ->assertJson([
                 'if' => [
-                    'firstArgument' => 'firstArgument',
-                    'secondArgument' => 'secondArgument',
-                    'operator' => '===',
+                    '===' => ['first' => 'var1', 'second' => 'var2']
                 ]
             ]);
     }

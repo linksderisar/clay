@@ -30,11 +30,11 @@ abstract class ConditionBlueprint extends Blueprint
     /**
      * Condition Operator
      *
-     * @var array
+     * @var string
      */
-    protected $operator = [];
+    protected $operator = '';
 
-    /** @var array  */
+    /** @var array */
     const ALLOWED_OPERATORS = ['==', '===', '>', '<', '>=', '<=', '!=', '!=='];
 
     /**
@@ -55,7 +55,7 @@ abstract class ConditionBlueprint extends Blueprint
      */
     public function setFirstArgument($firstArgument): self
     {
-        $this->firstArgument = ['firstArgument' => $firstArgument];
+        $this->firstArgument = ['first' => $firstArgument];
         return $this;
     }
 
@@ -67,7 +67,7 @@ abstract class ConditionBlueprint extends Blueprint
      */
     public function setBindFirstArgument($firstArgument): self
     {
-        $this->firstArgument = [':firstArgument' => $firstArgument];
+        $this->firstArgument = [':first' => $firstArgument];
         return $this;
     }
 
@@ -89,7 +89,7 @@ abstract class ConditionBlueprint extends Blueprint
      */
     public function setSecondArgument($secondArgument): self
     {
-        $this->secondArgument = ['secondArgument' => $secondArgument];
+        $this->secondArgument = ['second' => $secondArgument];
         return $this;
     }
 
@@ -101,16 +101,16 @@ abstract class ConditionBlueprint extends Blueprint
      */
     public function setBindSecondArgument($secondArgument): self
     {
-        $this->secondArgument = [':secondArgument' => $secondArgument];
+        $this->secondArgument = [':second' => $secondArgument];
         return $this;
     }
 
     /**
      * Get Operator
      *
-     * @return array
+     * @return string
      */
-    public function getOperator(): array
+    public function getOperator(): string
     {
         return $this->operator;
     }
@@ -123,19 +123,7 @@ abstract class ConditionBlueprint extends Blueprint
      */
     public function setOperator(string $operator): self
     {
-        $this->operator = ['operator' => $operator];
-        return $this;
-    }
-
-    /**
-     * Set bound operator
-     *
-     * @param string $operator
-     * @return $this
-     */
-    public function setBindOperator(string $operator): self
-    {
-        $this->operator = [':operator' => $operator];
+        $this->operator = $operator;
         return $this;
     }
 
@@ -172,17 +160,19 @@ abstract class ConditionBlueprint extends Blueprint
             throw new RequiredBlueprintAttributeMissingException('Operator need to be set!');
         }
 
-        if (!in_array(array_first($this->getOperator()), self::ALLOWED_OPERATORS)) {
+        if (!in_array($this->getOperator(), self::ALLOWED_OPERATORS)) {
             throw new BlueprintException(
-                '"' . array_first($this->getOperator()) . '" Operator isn\'t allowed. Allowed Operator: [ ' . implode(', ', self::ALLOWED_OPERATORS) . ' ]'
+                '"' . $this->getOperator() . '" Operator isn\'t allowed. Allowed Operator: 
+                [ ' . implode(', ', self::ALLOWED_OPERATORS) . ' ]'
             );
         }
 
-        return array_merge(
-            $this->getFirstArgument(),
-            $this->getSecondArgument(),
-            $this->getOperator()
-        );
+        return [
+            $this->getOperator() =>
+                array_merge(
+                    $this->getFirstArgument(),
+                    $this->getSecondArgument()
+                )
+        ];
     }
-
 }

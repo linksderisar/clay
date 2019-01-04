@@ -6,6 +6,7 @@ use Linksderisar\Clay\Blueprints\ComponentBlueprint;
 use Linksderisar\Clay\Blueprints\LoopBlueprint;
 use Linksderisar\Clay\Components\BindProxy;
 use Linksderisar\Clay\Exceptions\ComponentException;
+use Linksderisar\Clay\Support\Condition;
 
 abstract class Component implements \Linksderisar\Clay\Components\Contracts\Component
 {
@@ -41,6 +42,17 @@ abstract class Component implements \Linksderisar\Clay\Components\Contracts\Comp
         }
 
         $this->initialBlueprint();
+    }
+
+    /**
+     * @param mixed ...$options
+     * @return $this
+     * @throws ComponentException
+     * @throws \Linksderisar\Clay\Exceptions\BlueprintException
+     */
+    public static function make(...$options)
+    {
+        return new static(...$options);
     }
 
     /**
@@ -300,6 +312,40 @@ abstract class Component implements \Linksderisar\Clay\Components\Contracts\Comp
     public function bind(callable $bind): self
     {
         $bind(new BindProxy($this));
+        return $this;
+    }
+
+    /**
+     * @param callable $callable
+     * @return $this
+     * @throws ComponentException
+     */
+    public function if(callable $callable)
+    {
+        return $this->condition('if', $callable);
+    }
+
+    /**
+     * @param callable $callable
+     * @return $this
+     * @throws ComponentException
+     */
+    public function show(callable $callable)
+    {
+        return $this->condition('show', $callable);
+    }
+
+    /**
+     * @param string $type
+     * @param callable $callable
+     * @return Component
+     * @throws ComponentException
+     */
+    public function condition(string $type, callable $callable)
+    {
+        $this->setBlueprint(
+            $callable(new Condition($type, $this->blueprint))->transformBlueprint()
+        );
         return $this;
     }
 

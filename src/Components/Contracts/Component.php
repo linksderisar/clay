@@ -2,9 +2,13 @@
 
 namespace Linksderisar\Clay\Components\Contracts;
 
-
 interface Component
 {
+
+    /**
+     * @return $this
+     */
+    public static function make();
 
     /**
      * Clone Component
