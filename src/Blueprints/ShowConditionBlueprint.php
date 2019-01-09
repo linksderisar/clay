@@ -12,17 +12,5 @@ use Linksderisar\Clay\Blueprints\Abstracts\ConditionBlueprint;
  */
 class ShowConditionBlueprint extends ConditionBlueprint
 {
-    /**
-     * Convert to Array
-     *
-     * @return array
-     * @throws \Linksderisar\Clay\Exceptions\BlueprintException
-     * @throws \Linksderisar\Clay\Exceptions\RequiredBlueprintAttributeMissingException
-     */
-    public function toArray(): array
-    {
-        return [
-            'show' => parent::toArray(),
-        ];
-    }
+    protected $type = 'show';
 }

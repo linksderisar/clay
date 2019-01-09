@@ -3,6 +3,7 @@
 namespace Linksderisar\Clay\Blueprints;
 
 use Linksderisar\Clay\Blueprints\Abstracts\Blueprint;
+use Linksderisar\Clay\Blueprints\Abstracts\ConditionBlueprint;
 use Linksderisar\Clay\Exceptions\BlueprintException;
 
 /**
@@ -139,20 +140,6 @@ class ComponentBlueprint extends Blueprint
     protected $loop;
 
     /**
-     * ConditionBlueprint with the information if the element should be rendered
-     *
-     * @var Blueprint
-     */
-    protected $if;
-
-    /**
-     * ConditionBlueprint with the information if the element should be displayed
-     *
-     * @var Blueprint
-     */
-    protected $show;
-
-    /**
      * It correspond to v-model in Vue
      * https://vuejs.org/v2/guide/components-custom-events.html#Customizing-Component-v-model
      *
@@ -166,6 +153,13 @@ class ComponentBlueprint extends Blueprint
      * @var array
      */
     protected $bound = [];
+
+    /**
+     * Conditions
+     *
+     * @var ConditionBlueprint[]
+     */
+    protected $conditions = [];
 
     /**
      * @return array
@@ -506,24 +500,24 @@ class ComponentBlueprint extends Blueprint
     /**
      * Set If Condition
      *
-     * @param Blueprint $if
+     * @param ConditionBlueprint $condition
      * @return $this
      */
-    public function setIf(Blueprint $if): self
+    public function setCondition(ConditionBlueprint $condition): self
     {
-        $this->if = $if;
+        $this->conditions = [$condition];
         return $this;
     }
 
     /**
-     * Set Show Condition
+     * Set If Condition
      *
-     * @param Blueprint $show
+     * @param ConditionBlueprint ...$condition
      * @return $this
      */
-    public function setShow(Blueprint $show): self
+    public function addCondition(ConditionBlueprint ...$condition): self
     {
-        $this->show = $show;
+        $this->conditions = array_merge($this->getConditions(), $condition);
         return $this;
     }
 
@@ -676,23 +670,13 @@ class ComponentBlueprint extends Blueprint
     }
 
     /**
-     * Get Show Condition
+     * Get Conditions
      *
-     * @return Blueprint
+     * @return ConditionBlueprint[]
      */
-    public function getShow(): ?Blueprint
+    public function getConditions(): array
     {
-        return $this->show;
-    }
-
-    /**
-     * Get If Condition
-     *
-     * @return Blueprint
-     */
-    public function getIf(): ?Blueprint
-    {
-        return $this->if;
+        return $this->conditions;
     }
 
     /**
@@ -792,12 +776,16 @@ class ComponentBlueprint extends Blueprint
             $array = array_merge($array, $this->getLoop()->toArray());
         }
 
-        if ($this->getIf()) {
-            $array = array_merge($array, $this->getIf()->toArray());
-        }
-
-        if ($this->getShow()) {
-            $array = array_merge($array, $this->getShow()->toArray());
+        if ($this->getConditions()) {
+            $array = array_merge(
+                $array,
+                collect($this->getConditions())->flatMap(
+                    function (ConditionBlueprint $conditionBlueprint) {
+                        return $conditionBlueprint->toArray();
+                    }
+                )
+                    ->all()
+            );
         }
 
         if (!empty($this->getText())) {
@@ -819,5 +807,4 @@ class ComponentBlueprint extends Blueprint
 
         return $array;
     }
-
 }

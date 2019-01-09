@@ -2,13 +2,13 @@
 
 namespace Linksderisar\Clay\Tests\Feature\Blueprints;
 
-use Linksderisar\Clay\Tests\TestCase;
 use Linksderisar\Clay\Blueprints\ComponentBlueprint;
-use Linksderisar\Clay\Blueprints\LoopBlueprint;
-use Linksderisar\Clay\Exceptions\BlueprintException;
 use Linksderisar\Clay\Blueprints\IfConditionBlueprint;
+use Linksderisar\Clay\Blueprints\LoopBlueprint;
 use Linksderisar\Clay\Blueprints\ShowConditionBlueprint;
+use Linksderisar\Clay\Exceptions\BlueprintException;
 use Linksderisar\Clay\Exceptions\RequiredBlueprintAttributeMissingException;
+use Linksderisar\Clay\Tests\TestCase;
 
 class ComponentBlueprintTest extends TestCase
 {
@@ -47,7 +47,9 @@ class ComponentBlueprintTest extends TestCase
     public function type_as_first_argument_in_create_blueprint_is_required()
     {
         $this->expectException(BlueprintException::class);
-        $this->expectExceptionMessage('First Parameter of ' . class_basename(ComponentBlueprint::class) . 'must be the Type.');
+        $this->expectExceptionMessage(
+            'First Parameter of ' . class_basename(ComponentBlueprint::class) . 'must be the Type.'
+        );
         ComponentBlueprint::create();
     }
 
@@ -352,7 +354,8 @@ class ComponentBlueprintTest extends TestCase
 
         $this->assertEquals(
             '$_slot_props.' . $this->blueprint->getId() . '.ref.for.prop',
-            $this->blueprint->slotProp('ref.for.prop'));
+            $this->blueprint->slotProp('ref.for.prop')
+        );
     }
 
     /** @test */
@@ -396,17 +399,14 @@ class ComponentBlueprintTest extends TestCase
     /** @test */
     public function if_can_be_set_in_blueprint()
     {
-        $this->blueprint->setIf(
-            IfConditionBlueprint::create()
-                ->setFirstArgument('firstArgument')
-                ->setOperator('===')
-                ->setSecondArgument('secondArgument')
+        $this->blueprint->addCondition(
+            IfConditionBlueprint::create()->setCondition('a === b')
         );
 
         $this->makeTestResponse($this->blueprint->toJson())
             ->assertJson($this->makeAssertBlueprint(
                 [
-                    "if" => []
+                    "if" => 'a === b'
                 ]
             ));
     }
@@ -414,17 +414,14 @@ class ComponentBlueprintTest extends TestCase
     /** @test */
     public function show_can_be_set_in_blueprint()
     {
-        $this->blueprint->setIf(
-            ShowConditionBlueprint::create()
-                ->setFirstArgument('firstArgument')
-                ->setOperator('===')
-                ->setSecondArgument('secondArgument')
+        $this->blueprint->addCondition(
+            ShowConditionBlueprint::create()->setCondition('a === b')
         );
 
         $this->makeTestResponse($this->blueprint->toJson())
             ->assertJson($this->makeAssertBlueprint(
                 [
-                    "show" => []
+                    "show" => 'a === b'
                 ]
             ));
     }
@@ -464,7 +461,9 @@ class ComponentBlueprintTest extends TestCase
     public function a_blueprint_can_not_have_children_and_text_at_once()
     {
         $this->expectException(BlueprintException::class);
-        $this->expectExceptionMessage(class_basename(ComponentBlueprint::class) . ' can not have Children and Text at the same Time!');
+        $this->expectExceptionMessage(
+            class_basename(ComponentBlueprint::class) . ' can not have Children and Text at the same Time!'
+        );
 
         $this->blueprint->setChildren(ComponentBlueprint::create('child'))->setText('Text')->toJson();
     }

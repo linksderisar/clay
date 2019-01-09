@@ -2,7 +2,6 @@
 
 namespace Linksderisar\Clay\Blueprints\Abstracts;
 
-use Linksderisar\Clay\Exceptions\BlueprintException;
 use Linksderisar\Clay\Exceptions\RequiredBlueprintAttributeMissingException;
 
 /**
@@ -13,118 +12,25 @@ use Linksderisar\Clay\Exceptions\RequiredBlueprintAttributeMissingException;
  */
 abstract class ConditionBlueprint extends Blueprint
 {
-    /**
-     * First condition argument
-     *
-     * @var array
-     */
-    protected $firstArgument = [];
+
+    protected $condition = '';
 
     /**
-     * Second condition argument
-     *
-     * @var array
-     */
-    protected $secondArgument = [];
-
-    /**
-     * Condition Operator
-     *
-     * @var string
-     */
-    protected $operator = '';
-
-    /** @var array */
-    const ALLOWED_OPERATORS = ['==', '===', '>', '<', '>=', '<=', '!=', '!=='];
-
-    /**
-     * Get First Argument
-     *
-     * @return mixed
-     */
-    public function getFirstArgument(): array
-    {
-        return $this->firstArgument;
-    }
-
-    /**
-     * Set first argument
-     *
-     * @param mixed $firstArgument
+     * @param string $condition
      * @return $this
      */
-    public function setFirstArgument($firstArgument): self
+    public function setCondition(string $condition): self
     {
-        $this->firstArgument = ['first' => $firstArgument];
+        $this->condition = $condition;
         return $this;
     }
 
     /**
-     * Set first bound Argument
-     *
-     * @param mixed $firstArgument
-     * @return $this
-     */
-    public function setBindFirstArgument($firstArgument): self
-    {
-        $this->firstArgument = [':first' => $firstArgument];
-        return $this;
-    }
-
-    /**
-     * Get second argument
-     *
-     * @return mixed
-     */
-    public function getSecondArgument(): array
-    {
-        return $this->secondArgument;
-    }
-
-    /**
-     * Set second argument
-     *
-     * @param mixed $secondArgument
-     * @return $this
-     */
-    public function setSecondArgument($secondArgument): self
-    {
-        $this->secondArgument = ['second' => $secondArgument];
-        return $this;
-    }
-
-    /**
-     * Set second bound Argument
-     *
-     * @param mixed $secondArgument
-     * @return $this
-     */
-    public function setBindSecondArgument($secondArgument): self
-    {
-        $this->secondArgument = [':second' => $secondArgument];
-        return $this;
-    }
-
-    /**
-     * Get Operator
-     *
      * @return string
      */
-    public function getOperator(): string
+    public function getCondition(): string
     {
-        return $this->operator;
-    }
-
-    /**
-     * Set Operator
-     *
-     * @param string $operator
-     * @return $this
-     */
-    public function setOperator(string $operator): self
-    {
-        $this->operator = $operator;
-        return $this;
+        return $this->condition;
     }
 
     /**
@@ -143,36 +49,15 @@ abstract class ConditionBlueprint extends Blueprint
      *
      * @return array
      * @throws RequiredBlueprintAttributeMissingException
-     * @throws BlueprintException
      */
     public function toArray(): array
     {
-
-        if (empty($this->getFirstArgument()) && $this->getSecondArgument() !== false) {
-            throw new RequiredBlueprintAttributeMissingException('FirstArgument need to be set!');
-        }
-
-        if (empty($this->getSecondArgument()) && $this->getSecondArgument() !== false) {
-            throw new RequiredBlueprintAttributeMissingException('SecondArgument need to be set!');
-        }
-
-        if (empty($this->getOperator())) {
-            throw new RequiredBlueprintAttributeMissingException('Operator need to be set!');
-        }
-
-        if (!in_array($this->getOperator(), self::ALLOWED_OPERATORS)) {
-            throw new BlueprintException(
-                '"' . $this->getOperator() . '" Operator isn\'t allowed. Allowed Operator: 
-                [ ' . implode(', ', self::ALLOWED_OPERATORS) . ' ]'
-            );
+        if (empty($this->getType())) {
+            throw new RequiredBlueprintAttributeMissingException('Type is required for Conditions.');
         }
 
         return [
-            $this->getOperator() =>
-                array_merge(
-                    $this->getFirstArgument(),
-                    $this->getSecondArgument()
-                )
+            $this->getType() => $this->getCondition()
         ];
     }
 }

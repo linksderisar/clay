@@ -10,16 +10,11 @@ class ShowConditionBlueprintTest extends TestCase
     /** @test */
     public function arguments_are_correct_wrapped_in_json()
     {
-        $condition = ShowConditionBlueprint::create()
-            ->setFirstArgument('firstArgument')
-            ->setOperator('===')
-            ->setSecondArgument('secondArgument');
+        $condition = ShowConditionBlueprint::create()->setCondition('a === b');
 
         $this->makeTestResponse($condition->toJson())
             ->assertJson([
-                'show' => [
-                    '===' => ['first' => 'firstArgument', 'second' => 'secondArgument']
-                ]
+                'show' => 'a === b'
             ]);
     }
 }

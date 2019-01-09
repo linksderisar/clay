@@ -3,6 +3,7 @@
 namespace Linksderisar\Clay\Tests\Feature\Components;
 
 use Linksderisar\Clay\Blueprints\ComponentBlueprint;
+use Linksderisar\Clay\Blueprints\IfConditionBlueprint;
 use Linksderisar\Clay\Components\Abstracts\Component;
 use Linksderisar\Clay\Exceptions\ComponentException;
 use Linksderisar\Clay\Tests\TestCase;
@@ -81,7 +82,10 @@ class ComponentTest extends TestCase
     public function attributes_can_be_set()
     {
         $this->component->attributes(['attribute' => 'value', 'attribute_2' => 'value_2']);
-        $this->assertEquals(['attribute' => 'value', 'attribute_2' => 'value_2'], $this->component->getBlueprint()->getAttributes());
+        $this->assertEquals(
+            ['attribute' => 'value', 'attribute_2' => 'value_2'],
+            $this->component->getBlueprint()->getAttributes()
+        );
     }
 
     /** @test */
@@ -123,15 +127,13 @@ class ComponentTest extends TestCase
             return [$slotChild->prop('test', $slotProp('test'))];
         });
 
-        $this->assertEquals([
-            'test' => '$_slot_props.' . $this->component->getId() . '.test'
-        ],
+        $this->assertEquals(
+            ['test' => '$_slot_props.' . $this->component->getId() . '.test'],
             $this->component->getScopedSlots()[0]->getBlueprint()->getProps()
         );
 
-        $this->assertEquals([
-            'test' => '$_slot_props.' . $this->component->getId() . '.test'
-        ],
+        $this->assertEquals(
+            ['test' => '$_slot_props.' . $this->component->getId() . '.test'],
             $this->component->getBlueprint()->getScopedSlots()[0]->getProps()
         );
     }
@@ -182,6 +184,42 @@ class ComponentTest extends TestCase
     {
         $this->component->on('event', 'method()');
         $this->assertEquals(['event' => 'method()'], $this->component->getBlueprint()->getOn());
+    }
+
+    /** @test */
+    public function conditions_can_be_set()
+    {
+        $this->component->condition(IfConditionBlueprint::class, 'a === b');
+        $blueprint = $this->component->getBlueprint()->toArray();
+        $this->assertEquals('a === b', $blueprint['if']);
+    }
+
+    /** @test */
+    public function if_condition_can_be_set()
+    {
+        $this->component->if('a === b');
+        $blueprint = $this->component->getBlueprint()->toArray();
+        $this->assertEquals('a === b', $blueprint['if']);
+    }
+
+    /** @test */
+    public function show_condition_can_be_set()
+    {
+        $this->component->show('a === b');
+        $blueprint = $this->component->getBlueprint()->toArray();
+        $this->assertEquals('a === b', $blueprint['show']);
+    }
+
+    /** @test */
+    public function two_conditions_can_be_set()
+    {
+        $this->component
+            ->show('a === b')
+            ->if('c === d');
+
+        $blueprint = $this->component->getBlueprint()->toArray();
+        $this->assertEquals('a === b', $blueprint['show']);
+        $this->assertEquals('c === d', $blueprint['if']);
     }
 
     /** @test */

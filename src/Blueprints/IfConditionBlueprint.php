@@ -12,17 +12,5 @@ use Linksderisar\Clay\Blueprints\Abstracts\ConditionBlueprint;
  */
 class IfConditionBlueprint extends ConditionBlueprint
 {
-    /**
-     * Convert to array
-     *
-     * @return array
-     * @throws \Linksderisar\Clay\Exceptions\RequiredBlueprintAttributeMissingException
-     * @throws \Linksderisar\Clay\Exceptions\BlueprintException
-     */
-    public function toArray(): array
-    {
-        return [
-            'if' => parent::toArray(),
-        ];
-    }
+    protected $type = 'if';
 }

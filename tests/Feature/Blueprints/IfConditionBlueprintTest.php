@@ -10,16 +10,11 @@ class IfConditionBlueprintTest extends TestCase
     /** @test */
     public function arguments_are_correct_wrapped_in_json()
     {
-        $condition = IfConditionBlueprint::create()
-            ->setFirstArgument('var1')
-            ->setOperator('===')
-            ->setSecondArgument('var2');
+        $condition = IfConditionBlueprint::create()->setCondition('a === b');
 
         $this->makeTestResponse($condition->toJson())
             ->assertJson([
-                'if' => [
-                    '===' => ['first' => 'var1', 'second' => 'var2']
-                ]
+                'if' => 'a === b'
             ]);
     }
 }

@@ -3,7 +3,9 @@
 namespace Linksderisar\Clay\Components\Abstracts;
 
 use Linksderisar\Clay\Blueprints\ComponentBlueprint;
+use Linksderisar\Clay\Blueprints\IfConditionBlueprint;
 use Linksderisar\Clay\Blueprints\LoopBlueprint;
+use Linksderisar\Clay\Blueprints\ShowConditionBlueprint;
 use Linksderisar\Clay\Components\BindProxy;
 use Linksderisar\Clay\Exceptions\ComponentException;
 use Linksderisar\Clay\Support\Condition;
@@ -316,36 +318,31 @@ abstract class Component implements \Linksderisar\Clay\Components\Contracts\Comp
     }
 
     /**
-     * @param callable $callable
+     * @param string $condition
      * @return $this
-     * @throws ComponentException
      */
-    public function if(callable $callable)
+    public function if(string $condition)
     {
-        return $this->condition('if', $callable);
+        return $this->condition(IfConditionBlueprint::class, $condition);
     }
 
     /**
-     * @param callable $callable
+     * @param string $condition
      * @return $this
-     * @throws ComponentException
      */
-    public function show(callable $callable)
+    public function show(string $condition)
     {
-        return $this->condition('show', $callable);
+        return $this->condition(ShowConditionBlueprint::class, $condition);
     }
 
     /**
      * @param string $type
-     * @param callable $callable
+     * @param string $condition
      * @return Component
-     * @throws ComponentException
      */
-    public function condition(string $type, callable $callable)
+    public function condition(string $type, string $condition)
     {
-        $this->setBlueprint(
-            $callable(new Condition($type, $this->blueprint))->transformBlueprint()
-        );
+        $this->getBlueprint()->addCondition($type::create()->setCondition($condition));
         return $this;
     }
 
