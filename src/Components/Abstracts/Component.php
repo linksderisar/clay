@@ -8,7 +8,6 @@ use Linksderisar\Clay\Blueprints\LoopBlueprint;
 use Linksderisar\Clay\Blueprints\ShowConditionBlueprint;
 use Linksderisar\Clay\Components\BindProxy;
 use Linksderisar\Clay\Exceptions\ComponentException;
-use Linksderisar\Clay\Support\Condition;
 
 abstract class Component implements \Linksderisar\Clay\Components\Contracts\Component
 {

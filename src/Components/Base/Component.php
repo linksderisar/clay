@@ -1,6 +1,6 @@
 <?php
 
-namespace linksderisar\Clay\Components;
+namespace Linksderisar\Clay\Components\Base;
 
 use Linksderisar\Clay\Exceptions\ComponentException;
 
