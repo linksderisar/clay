@@ -8,7 +8,7 @@ composer require linksderisar/clay
 ```php
 \Linksderisar\Clay\Components\Base\Component::make('div')->toJson();
 
-// or return it direct from the Controller
+// Or return it directly from the Controller
 
 Route::get('/', function () {
     return \Linksderisar\Clay\Components\Base\Component::make('div');
