@@ -2,24 +2,17 @@
 
 namespace Linksderisar\Clay\Components\Base;
 
-use Linksderisar\Clay\Exceptions\ComponentException;
-
 class Component extends \Linksderisar\Clay\Components\Abstracts\Component
 {
     /**
      * Component constructor.
-     *
      * @param mixed ...$options
-     * @throws ComponentException
      * @throws \Linksderisar\Clay\Exceptions\BlueprintException
+     * @throws \Linksderisar\Clay\Exceptions\ComponentException
      */
-    public function __construct(...$options)
+    public function __construct(... $options)
     {
-        if ($options[0] ?? false) {
-            throw new ComponentException('The First argument must be the type.');
-        }
-
-        $this->type = $options[0];
-        parent::__construct($options);
+        $this->setType($options[0]);
+        parent::__construct(...$options);
     }
 }

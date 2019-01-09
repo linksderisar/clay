@@ -1,6 +1,6 @@
 <?php
 
-namespace Linksderisar\Clay\Tests\Feature\Components;
+namespace Linksderisar\Clay\Tests\Feature\Components\Abstracts;
 
 use Linksderisar\Clay\Blueprints\ComponentBlueprint;
 use Linksderisar\Clay\Blueprints\IfConditionBlueprint;
