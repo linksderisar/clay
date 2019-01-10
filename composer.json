@@ -1,6 +1,6 @@
 {
     "name": "linksderisar/clay",
-    "description": "A Package to create Clay Json Blueprints",
+    "description": "Create Json Blueprints for the Vue.js Clay Renderer",
     "license": "MIT",
     "version": "0.1.0",
     "authors": [
