@@ -1,6 +1,6 @@
 <?php
 
-namespace linksderisar\Clay\Components\Roots;
+namespace Linksderisar\Clay\Components\Roots;
 
 use Linksderisar\Clay\Components\Abstracts\Root;
 
