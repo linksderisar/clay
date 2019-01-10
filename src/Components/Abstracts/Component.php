@@ -233,6 +233,27 @@ abstract class Component implements \Linksderisar\Clay\Components\Contracts\Comp
     }
 
     /**
+     * @param string $cssAttribute
+     * @param string $value
+     * @return $this
+     */
+    public function style(string $cssAttribute, string $value): self
+    {
+        $this->getBlueprint()->setStyle([$cssAttribute => $value]);
+        return $this;
+    }
+
+    /**
+     * @param array $styles
+     * @return $this
+     */
+    public function styles(array $styles): self
+    {
+        $this->getBlueprint()->setStyle($styles);
+        return $this;
+    }
+
+    /**
      * @param $key
      * @return $this
      */

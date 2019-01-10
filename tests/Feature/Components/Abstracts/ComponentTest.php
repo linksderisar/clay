@@ -152,6 +152,22 @@ class ComponentTest extends TestCase
     }
 
     /** @test */
+    public function styles_can_be_set()
+    {
+        $this->component->styles(['background-color' => 'black']);
+        $this->assertArraySubset(
+            ['style' => ['background-color' => 'black']],
+            $this->component->toArray()['attributes']
+        );
+
+        $this->component->style('background-color', 'black');
+        $this->assertArraySubset(
+            ['style' => ['background-color' => 'black']],
+            $this->component->toArray()['attributes']
+        );
+    }
+
+    /** @test */
     public function key_can_be_set()
     {
         $this->component->key('key');
