@@ -54,6 +54,109 @@ You can add vue props using the ```prop('class','my-css-class')``` function.
     ->props(['my-Prop'=> 'prop-value']);
 ```
 
+### Examples
+#### An overwhelming example
+
+PHP Code:
+```php
+ return Page::create(
+        Component::make('div')
+            ->key('someKey')
+            ->ref('ref')
+            ->refInFor()
+            ->classes('some-class')
+            ->prop('staticProp', 'value')
+            ->if('a === b')
+            ->show('c === b')
+            ->loop('array/object')
+            ->style('background-color', 'black')
+            ->children(
+                Component::make('span')->text('Some Text between the Tags'),
+                Component::make('some-component')
+                    ->scopedSlots(function ($scope) {
+                        return [Component::make('div')
+                            ->on('someEvent', $scope('scoped.method()'))
+                            ->bind(function ($component) use ($scope) {
+                                return $component->prop('boundProp', $scope('scoped.value'));
+                            })];
+                    })
+            )
+    )
+        ->store(['variable' => 'value'])
+        ->header([
+            'title' => 'Titel der seite',
+            'link' => ['rel' => 'stylesheet', 'href' => '/some/css.css']
+        ]);
+```
+Generated Json Blueprint:
+```json
+    {
+        "store": {
+            "variable": "value"
+        },
+        "meta": {
+            "version": "1.0.0"
+        },
+        "head": {
+            "title": "Titel der seite",
+            "link": {
+                "rel": "stylesheet",
+                "href": "/some/css.css"
+            }
+        },
+        "componentTree": {
+            "id": "ERX1cc5HWzDuKUMF",
+            "type": "div",
+            "attributes": {
+                "key": "someKey",
+                "ref": "ref",
+                "refInFor": true,
+                "style": {
+                    "background-color": "black"
+                },
+                "props": {
+                    "staticProp": "value"
+                },
+                "class": [
+                    "some-class"
+                ]
+            },
+            "loop": "array/object",
+            "if": "a === b",
+            "show": "c === b",
+            "children": [
+                {
+                    "id": "nMkHWwpuogLFqZwE",
+                    "type": "span",
+                    "children": {
+                        "id": "Sr6cm4i2ojUH48KW",
+                        "type": "$text",
+                        "value": "Some Text between the Tags"
+                    }
+                },
+                {
+                    "id": "X4XzTHudtT6kxxzi",
+                    "type": "some-component",
+                    "scopedSlots": [
+                        {
+                            "id": "lPusFpNEW0LxSsGr",
+                            "type": "div",
+                            "attributes": {
+                                "props": {
+                                    ":boundProp": "$_slot_props.X4XzTHudtT6kxxzi.scoped.value"
+                                },
+                                "on": {
+                                    "someEvent": "$_slot_props.X4XzTHudtT6kxxzi.scoped.method()"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+```
+
 
 
 ### Blueprints
